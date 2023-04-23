@@ -1,38 +1,30 @@
 import {Router} from 'express'
-import { body, oneOf, validationResult } from "express-validator";
-import { handleInputErrors } from './modules/middleware';
+import { body, oneOf, validationResult } from "express-validator"
+import { createProduct, deleteProduct, getOneProduct, getProducts } from './handlers/product'
+import { handleInputErrors } from './modules/middleware'
+
 
 const router = Router()
 /*  put vs patch 
     put replaces the role data with what was sent, only the id remais the same 
     patch only update the properties sent */
 
-// Product routes
-router.get('/product', (req,res) => {
-    res.json({message:'products list'})
+/**
+ * Product routes
+ * */ 
+router.get('/product', getProducts)
+router.get('/product/:id', getOneProduct)
+router.put('/product/:id', body('name').isString(), handleInputErrors, (req, res) => {
+  
 })
+router.post('/product', body('name').isString(), handleInputErrors, createProduct)
+router.delete('/product/:id', deleteProduct)
 
-router.get('/product/:id', () => {
-
-})
-//req.body which is an object, should have a string field called 'name'
-router.put('/product/:id', body('name').isString(),handleInputErrors,(req, res) => {
-    
-})
-
-router.post('/product', body('name').isString(),handleInputErrors,(req, res) => {
-
-})
-
-router.delete('/product/:id', () => {
-
-})
-
-// Update routes
+/**
+ * Update routes
+ * */ 
 router.get('/update', () => {})
-
 router.get('/update/:id', () => {})
-
 router.put('/update/:id', 
     body('title').optional(), 
     body('body').optional(), 
@@ -40,7 +32,6 @@ router.put('/update/:id',
     body('version').optional(), 
     () => {}
 )
-
 router.post('/update', 
     body('title').exists().isString(),
     body('body').exists().isString(),
@@ -49,7 +40,9 @@ router.post('/update',
 
 router.delete('/update/:id', () => {})
 
-// Update Point routes
+/* * 
+ * Update Point routes
+ * */
 router.get('/updatepoint', () => {})
 router.get('/updatepoint/:id', () => {})
 
