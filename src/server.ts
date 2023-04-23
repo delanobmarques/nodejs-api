@@ -3,12 +3,12 @@ import router from './router'
 import morgan from 'morgan'
 import cors from 'cors'
 import { protect } from './modules/auth'
+import { createNewUser, signin } from './handlers/user'
 
 const app = express()
 
 app.use(cors())
-//every request has to go through morgan - console.logs it and goes to the next thing on the stack
-app.use(morgan('dev'))
+app.use(morgan('dev')) //every request has to go through morgan - console.logs it and goes to the next thing on the stack
 app.use(express.json())//middleware to allows a client to send the server json 
 app.use(express.urlencoded({extended: true}))//allows a client to add querystring, parameters, encode and decode it
 
@@ -24,7 +24,9 @@ app.get('/', (req, res) => {
     res.json({message: 'hello'})
 })
 
-//for everything that has '/api' I want the app to pass through protect middleware and use the router
-app.use('/api', protect, router)
+app.use('/api', protect, router)//for everything that has '/api' I want the app to pass through protect middleware and use the router
+
+app.post('/user', createNewUser)
+app.post('/signin', signin)
 
 export default app
