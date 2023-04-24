@@ -19,7 +19,7 @@ app.use(express.urlencoded({extended: true}))//allows a client to add querystrin
 // })
 
 app.get('/', (req, res, next) => {
-    res.json({message: 'hello'})
+    res.json({message: 'hello from api'})
 })
   
 app.use('/api', protect, router)//for everything that has '/api' I want the app to pass through protect middleware and use the router
